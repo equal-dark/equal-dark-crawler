@@ -10,11 +10,6 @@ import (
 )
 
 func Test_GetDocument_WhenFailedGet(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-		rw.WriteHeader(http.StatusNotFound)
-	}))
-	defer server.Close()
-
 	_, actual := fn.GetDocumentFromURL("http://failed_test")
 
 	assert.NotNil(t, actual)
