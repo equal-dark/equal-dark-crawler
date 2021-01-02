@@ -14,10 +14,9 @@ import (
 var _ = Describe("Killstar", func() {
 	var killstar crawlers.Killstar
 
-	var makeTestServer = func(statusCode int, body []byte) *httptest.Server {
+	var makeTestServer = func(body []byte) *httptest.Server {
 		server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 			rw.Header().Set("Content-Type", "text/html")
-			rw.WriteHeader(statusCode)
 			rw.Write(body)
 		}))
 		return server
@@ -26,7 +25,7 @@ var _ = Describe("Killstar", func() {
 	Describe("IsValidProductsPage", func() {
 		Context("When location is products page", func() {
 			It("Should returns true", func() {
-				server := makeTestServer(200, []byte(productsPageDocument))
+				server := makeTestServer([]byte(productsPageDocument))
 				defer server.Close()
 
 				doc, _ := goquery.NewDocument(server.URL)
@@ -38,7 +37,7 @@ var _ = Describe("Killstar", func() {
 
 		Context("When location is not products page", func() {
 			It("Should returns false", func() {
-				server := makeTestServer(200, []byte(mainPageDocument))
+				server := makeTestServer([]byte(mainPageDocument))
 				defer server.Close()
 
 				doc, _ := goquery.NewDocument(server.URL)
@@ -51,7 +50,7 @@ var _ = Describe("Killstar", func() {
 
 	Describe("GetProductsURL", func() {
 		It("should returns url array", func() {
-			server := makeTestServer(200, []byte(productsPageDocument))
+			server := makeTestServer([]byte(productsPageDocument))
 			defer server.Close()
 
 			doc, _ := goquery.NewDocument(server.URL)
@@ -64,7 +63,7 @@ var _ = Describe("Killstar", func() {
 	Describe("IsValidProductPage", func() {
 		Context("When location is product page", func() {
 			It("Should returns true", func() {
-				server := makeTestServer(200, []byte(productPageDocument))
+				server := makeTestServer([]byte(productPageDocument))
 				defer server.Close()
 
 				doc, _ := goquery.NewDocument(server.URL)
@@ -76,7 +75,7 @@ var _ = Describe("Killstar", func() {
 
 		Context("When location is not product page", func() {
 			It("Should returns false", func() {
-				server := makeTestServer(200, []byte(mainPageDocument))
+				server := makeTestServer([]byte(mainPageDocument))
 				defer server.Close()
 
 				doc, _ := goquery.NewDocument(server.URL)
