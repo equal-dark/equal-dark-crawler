@@ -109,4 +109,16 @@ var _ = Describe("Killstar", func() {
 			Expect(actual).To(Equal("GBP"))
 		})
 	})
+
+	Describe("GetProductPrice", func() {
+		It("Should returns float price", func() {
+			server := makeTestServer([]byte(saleProductPageDocument))
+			defer server.Close()
+
+			doc, _ := goquery.NewDocument(server.URL)
+			actual := killstar.GetProductPrice(doc)
+
+			Expect(actual).To(Equal(59.99))
+		})
+	})
 })

@@ -41,3 +41,11 @@ func (killstar *Killstar) GetProductCurrency(doc *goquery.Document) (currency st
 	currency = GetCurrencyFromText(priceStr)
 	return
 }
+
+// GetProductPrice returns float price
+func (killstar *Killstar) GetProductPrice(doc *goquery.Document) (price float64) {
+	priceSelector := doc.Find("[data-price-wrapper] .money")
+	priceStr := priceSelector.First().Text()
+	price = GetFloatFromText(priceStr)
+	return
+}
