@@ -220,4 +220,26 @@ var _ = Describe("Killstar", func() {
 			}))
 		})
 	})
+
+	Describe("GetProductDescription", func() {
+		It("Should returns description", func() {
+			server := makeTestServer([]byte(saleProductPageDocument))
+			defer server.Close()
+
+			doc, _ := goquery.NewDocument(server.URL)
+			actual := killstar.GetProductDescription(doc)
+
+			Expect(actual).To(Equal("LILIANA.\n\nHe saw the darkness in her beauty. She saw beauty in his darkness.\n\n- Lavish Victorian Lace.\n-\u00a0High Neck & Ruffle.\n- Detachable Cross.\n- Bell Sleeves\n- Fully Lined.\n- Fitted.\n\nModern vampire vibes with the enchanted 'Liliana' maiden dress - in a luxe Victorian-style lace,\u00a0\nfully lined with a high neckline, ruffle detail, detachable hardware cross and long delicate bell-sleeves\u00a0- all finished with lace-trimmed\u00a0hems and satin bow\u00a0front.\u00a0\nTransport yourself to a dreamy candle-lit world of magic - and channel your inner goddess.Living the doll-life; match with stockings, statement jewellery and a beautiful handbag.\n\nThe model is 5’3 (160cm) and wears a size XS.\n\nWash Cold - Gentle Cycle.\n\nwith KILLSTAR Branding, 65% Nylon, 35% Cotton.\n"))
+		})
+
+		It("Should returns description", func() {
+			server := makeTestServer([]byte(notSaleProductPageDocument))
+			defer server.Close()
+
+			doc, _ := goquery.NewDocument(server.URL)
+			actual := killstar.GetProductDescription(doc)
+
+			Expect(actual).To(Equal("DEITY.\u00a0\n\nShe's been through hell and came out stronger. Nothing or no-one has the power to break her magic.\n\n- Super Stretch Jersey. \n- Oversized Hood. \n- Low-cut Neckline.\n- Flared Sleeve. \n- Fitted. \n\nLive your life with unreasonable passion and see the magic that you can create. Channel yer inner goddess and look divine in the Deity Hood Dress. Conjured using a luxe soft-touch stretch jersey for a flattering and seductive fit. No detail has been spared; featuring sultry low-cut neckline, oversized hood and dramatic flare sleeve perfect for a date with the devil or night out with yer coven. Oh-so versatile -  perfect from dusk til dawn. \n\nLooks spellbinding with yer fav statement heels + a choker - mix and match as yer dark heart desires!\n\nWash Cold - Gentle Cycle. \n\nwith KILLSTAR branding, 95% Rayon, 5% Elastane. \n"))
+		})
+	})
 })

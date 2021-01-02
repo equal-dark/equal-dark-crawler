@@ -1,6 +1,8 @@
 package crawlers
 
 import (
+	"encoding/json"
+	"errors"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
@@ -103,5 +105,53 @@ func (killstar *Killstar) GetProductSizes(doc *goquery.Document) (sizes []Produc
 			InStock: inStock,
 		})
 	})
+	return
+}
+
+func (killstar *Killstar) getProductDescriptionFromJSON(doc *goquery.Document) (description string, err error) {
+	title := doc.Find(".mp-product-description strong").First().Text()
+
+	selector := doc.Find("span[data-sheets-value]")
+	descJSON, exist := selector.First().Attr("data-sheets-value")
+	if !exist {
+		err = errors.New("not found data-sheet-value")
+		return
+	}
+
+	var dataSheet map[string]interface{}
+	if err = json.Unmarshal([]byte(descJSON), &dataSheet); err != nil {
+		return
+	}
+
+	desc, exist := dataSheet["2"].(string)
+	if !exist {
+		err = errors.New("not found data-sheet-value")
+		return
+	}
+
+	description = title + "\n\n" + desc
+	return
+}
+
+func (killstar *Killstar) getProductDescriptionFromSelector(doc *goquery.Document) (description string) {
+	selector := doc.Find(".mp-product-description p")
+	desc := selector.Map(func(i int, s *goquery.Selection) string {
+		innerText := s.Contents().Map(func(i int, ss *goquery.Selection) string {
+			return ss.Text()
+		})
+		return strings.ReplaceAll(strings.Join(innerText, "\n"), "\n\n", "\n") + "\n"
+	})
+	description = strings.Join(desc, "\n")
+	return
+}
+
+// GetProductDescription returns description
+func (killstar *Killstar) GetProductDescription(doc *goquery.Document) (description string) {
+	description, err := killstar.getProductDescriptionFromJSON(doc)
+	if err == nil {
+		return
+	}
+
+	description = killstar.getProductDescriptionFromSelector(doc)
 	return
 }
