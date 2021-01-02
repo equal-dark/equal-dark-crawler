@@ -8,10 +8,7 @@ type Killstar struct{}
 // IsValidProductsPage checks page
 func (killstar *Killstar) IsValidProductsPage(doc *goquery.Document) bool {
 	products := doc.Find("#mp-collection-grid > div")
-	if products.Length() == 0 {
-		return false
-	}
-	return true
+	return products.Length() != 0
 }
 
 // GetProductsURL returns product url
