@@ -97,4 +97,16 @@ var _ = Describe("Killstar", func() {
 			Expect(actual).To(Equal("Liliana Lace Dress"))
 		})
 	})
+
+	Describe("GetProductCurrency", func() {
+		It("Should returns product currency", func() {
+			server := makeTestServer([]byte(productPageDocument))
+			defer server.Close()
+
+			doc, _ := goquery.NewDocument(server.URL)
+			actual := killstar.GetProductCurrency(doc)
+
+			Expect(actual).To(Equal("GBP"))
+		})
+	})
 })
