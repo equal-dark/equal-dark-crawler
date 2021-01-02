@@ -121,4 +121,34 @@ var _ = Describe("Killstar", func() {
 			Expect(actual).To(Equal(59.99))
 		})
 	})
+
+	Describe("GetProductSalePrice", func() {
+		Context("With sale price", func() {
+			It("Should returns float price", func() {
+				server := makeTestServer([]byte(saleProductPageDocument))
+				defer server.Close()
+
+				doc, _ := goquery.NewDocument(server.URL)
+				price := killstar.GetProductPrice(doc)
+				salePrice := killstar.GetProductSalePrice(doc)
+
+				Expect(price).NotTo(Equal(salePrice))
+				Expect(salePrice).To(Equal(41.99))
+			})
+		})
+
+		Context("Without sale price", func() {
+			It("Should returns float price", func() {
+				server := makeTestServer([]byte(notSaleProductPageDocument))
+				defer server.Close()
+
+				doc, _ := goquery.NewDocument(server.URL)
+				price := killstar.GetProductPrice(doc)
+				salePrice := killstar.GetProductSalePrice(doc)
+
+				Expect(price).To(Equal(salePrice))
+				Expect(salePrice).To(Equal(34.99))
+			})
+		})
+	})
 })
