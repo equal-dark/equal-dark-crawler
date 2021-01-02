@@ -64,7 +64,7 @@ var _ = Describe("Killstar", func() {
 	Describe("IsValidProductPage", func() {
 		Context("When location is product page", func() {
 			It("Should returns true", func() {
-				server := makeTestServer(200, []byte(mainPageDocument))
+				server := makeTestServer(200, []byte(productPageDocument))
 				defer server.Close()
 
 				doc, _ := goquery.NewDocument(server.URL)

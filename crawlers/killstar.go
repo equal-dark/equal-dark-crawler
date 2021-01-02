@@ -26,5 +26,6 @@ func (killstar *Killstar) GetProductsURL(doc *goquery.Document) (productsURL []s
 
 // IsValidProductPage checks page
 func (killstar *Killstar) IsValidProductPage(doc *goquery.Document) bool {
-	return false
+	nameSelector := doc.Find("[uk-grid] h2")
+	return nameSelector.Length() != 0
 }
