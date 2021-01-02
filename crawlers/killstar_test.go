@@ -158,7 +158,7 @@ var _ = Describe("Killstar", func() {
 			defer server.Close()
 
 			doc, _ := goquery.NewDocument(server.URL)
-			actual := killstar.GetProductImagesURL(doc)
+			actual := killstar.GetProductImages(doc)
 
 			Expect(actual).To(Equal([]crawlers.ProductImage{
 				{

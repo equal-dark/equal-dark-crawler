@@ -63,8 +63,8 @@ func (killstar *Killstar) GetProductSalePrice(doc *goquery.Document) (salePrice 
 	return
 }
 
-// GetProductImagesURL returns product images url
-func (killstar *Killstar) GetProductImagesURL(doc *goquery.Document) (images []ProductImage) {
+// GetProductImages returns product images thumbnail and big image url
+func (killstar *Killstar) GetProductImages(doc *goquery.Document) (images []ProductImage) {
 	selector := doc.Find("li[data-mp-slider-thumb] img")
 
 	thumbnails := selector.Map(func(i int, s *goquery.Selection) string {
