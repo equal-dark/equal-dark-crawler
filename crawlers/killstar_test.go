@@ -60,4 +60,30 @@ var _ = Describe("Killstar", func() {
 			Expect(actual[0]).To(Equal("https://www.killstar.com/collections/womens-dresses/products/wicked-world-dress"))
 		})
 	})
+
+	Describe("IsValidProductPage", func() {
+		Context("When location is product page", func() {
+			It("Should returns true", func() {
+				server := makeTestServer(200, []byte(mainPageDocument))
+				defer server.Close()
+
+				doc, _ := goquery.NewDocument(server.URL)
+				actual := killstar.IsValidProductPage(doc)
+
+				Expect(actual).To(BeTrue())
+			})
+		})
+
+		Context("When location is not product page", func() {
+			It("Should returns false", func() {
+				server := makeTestServer(200, []byte(mainPageDocument))
+				defer server.Close()
+
+				doc, _ := goquery.NewDocument(server.URL)
+				actual := killstar.IsValidProductPage(doc)
+
+				Expect(actual).To(BeFalse())
+			})
+		})
+	})
 })
