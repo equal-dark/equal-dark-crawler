@@ -25,4 +25,22 @@ var _ = Describe("Utils", func() {
 			})
 		})
 	})
+
+	Describe("GetFloatFromText", func() {
+		Context("With number in text", func() {
+			It("Should returns only float", func() {
+				actual := crawlers.GetFloatFromText("£59.99")
+
+				Expect(actual).To(Equal(59.99))
+			})
+		})
+
+		Context("Without number in text", func() {
+			It("Should returns 0", func() {
+				actual := crawlers.GetFloatFromText("£")
+
+				Expect(actual).To(Equal(0))
+			})
+		})
+	})
 })

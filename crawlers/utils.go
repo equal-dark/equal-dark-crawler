@@ -1,8 +1,11 @@
 package crawlers
 
-import "strings"
+import (
+	"regexp"
+	"strconv"
+	"strings"
+)
 
-var symbols = []string{"£"}
 var currencies = map[string]string{
 	"£": "GBP",
 }
@@ -15,4 +18,17 @@ func GetCurrencyFromText(s string) (currency string) {
 		}
 	}
 	return
+}
+
+// GetFloatFromText find not (number and dot) and remove, return parse float
+func GetFloatFromText(s string) float64 {
+	i := regexp.
+		MustCompile("[^0-9|.]").
+		ReplaceAllString(s, "")
+
+	f, err := strconv.ParseFloat(i, 64)
+	if err != nil {
+		return 0
+	}
+	return f
 }
