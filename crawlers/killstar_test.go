@@ -153,7 +153,7 @@ var _ = Describe("Killstar", func() {
 	})
 
 	Describe("GetProductImagesURL", func() {
-		It("Should returns images url string array", func() {
+		It("Should returns images url array", func() {
 			server := makeTestServer([]byte(saleProductPageDocument))
 			defer server.Close()
 
@@ -181,6 +181,42 @@ var _ = Describe("Killstar", func() {
 					Thumbnail: "https://cdn.shopify.com/s/files/1/0228/2373/products/LILIANA-DRESS-D_150x150_crop_center.jpg?v=1589376638",
 					Src:       "https://cdn.shopify.com/s/files/1/0228/2373/products/LILIANA-DRESS-D.jpg?v=1589376638",
 				},
+			}))
+		})
+	})
+
+	Describe("GetProductSizes", func() {
+		It("Should returns size name and in stock array", func() {
+			server := makeTestServer([]byte(saleProductPageDocument))
+			defer server.Close()
+
+			doc, _ := goquery.NewDocument(server.URL)
+			actual := killstar.GetProductSizes(doc)
+
+			Expect(actual).To(Equal([]crawlers.ProductSize{
+				{Name: "XS", InStock: false},
+				{Name: "S", InStock: false},
+				{Name: "M", InStock: false},
+				{Name: "L", InStock: true},
+				{Name: "XL", InStock: false},
+				{Name: "XXL", InStock: true},
+			}))
+		})
+
+		It("Should returns size name and in stock array", func() {
+			server := makeTestServer([]byte(notSaleProductPageDocument))
+			defer server.Close()
+
+			doc, _ := goquery.NewDocument(server.URL)
+			actual := killstar.GetProductSizes(doc)
+
+			Expect(actual).To(Equal([]crawlers.ProductSize{
+				{Name: "XS", InStock: true},
+				{Name: "S", InStock: true},
+				{Name: "M", InStock: true},
+				{Name: "L", InStock: true},
+				{Name: "XL", InStock: true},
+				{Name: "XXL", InStock: true},
 			}))
 		})
 	})

@@ -81,3 +81,27 @@ func (killstar *Killstar) GetProductImages(doc *goquery.Document) (images []Prod
 	}).([]ProductImage)
 	return
 }
+
+// GetProductSizes returns product size name and in stock
+func (killstar *Killstar) GetProductSizes(doc *goquery.Document) (sizes []ProductSize) {
+	sizes = []ProductSize{}
+	selector := doc.Find(`select[name="id"] option`)
+
+	selector.Each(func(i int, s *goquery.Selection) {
+		innerText := s.Text()
+		rawName := strings.Split(innerText, " / ")[0]
+		name := strings.Trim(
+			strings.Trim(rawName, "\n"),
+			" ",
+		)
+
+		_, disabled := s.Attr("disabled")
+		inStock := !disabled
+
+		sizes = append(sizes, ProductSize{
+			Name:    name,
+			InStock: inStock,
+		})
+	})
+	return
+}
