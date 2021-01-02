@@ -7,7 +7,12 @@ type Killstar struct{}
 
 // GetProductsURL returns product url
 func (killstar *Killstar) GetProductsURL(doc *goquery.Document) (productsURL []string) {
-	return nil
+	products := doc.Find("#mp-collection-grid > div")
+	productsURL = products.Map(func(i int, product *goquery.Selection) string {
+		href, _ := product.Find("a").First().Attr("href")
+		return "https://www.killstar.com" + href
+	})
+	return
 }
 
 // IsValidProductsPage checks page
