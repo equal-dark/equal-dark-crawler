@@ -50,6 +50,14 @@ var _ = Describe("Killstar", func() {
 	})
 
 	Describe("GetProductsURL", func() {
+		It("should returns url array", func() {
+			server := makeTestServer(200, []byte(productsPageDocument))
+			defer server.Close()
 
+			doc, _ := goquery.NewDocument(server.URL)
+			actual := killstar.GetProductsURL(doc)
+
+			Expect(actual[0]).To(Equal("https://www.killstar.com/collections/womens-dresses/products/wicked-world-dress"))
+		})
 	})
 })
