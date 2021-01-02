@@ -26,3 +26,10 @@ func (killstar *Killstar) IsValidProductPage(doc *goquery.Document) bool {
 	nameSelector := doc.Find("[uk-grid] h2")
 	return nameSelector.Length() != 0
 }
+
+// GetProductName returns product name
+func (killstar *Killstar) GetProductName(doc *goquery.Document) (name string) {
+	nameSelector := doc.Find("[uk-grid] h2")
+	name = nameSelector.First().Text()
+	return
+}

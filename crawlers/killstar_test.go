@@ -85,4 +85,16 @@ var _ = Describe("Killstar", func() {
 			})
 		})
 	})
+
+	Describe("GetProductName", func() {
+		It("Should returns product name", func() {
+			server := makeTestServer([]byte(productPageDocument))
+			defer server.Close()
+
+			doc, _ := goquery.NewDocument(server.URL)
+			actual := killstar.GetProductName(doc)
+
+			Expect(actual).To(Equal("Liliana Lace Dress"))
+		})
+	})
 })
