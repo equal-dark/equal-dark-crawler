@@ -63,7 +63,7 @@ var _ = Describe("Killstar", func() {
 	Describe("IsValidProductPage", func() {
 		Context("When location is product page", func() {
 			It("Should returns true", func() {
-				server := makeTestServer([]byte(productPageDocument))
+				server := makeTestServer([]byte(saleProductPageDocument))
 				defer server.Close()
 
 				doc, _ := goquery.NewDocument(server.URL)
@@ -88,7 +88,7 @@ var _ = Describe("Killstar", func() {
 
 	Describe("GetProductName", func() {
 		It("Should returns product name", func() {
-			server := makeTestServer([]byte(productPageDocument))
+			server := makeTestServer([]byte(saleProductPageDocument))
 			defer server.Close()
 
 			doc, _ := goquery.NewDocument(server.URL)
@@ -100,7 +100,7 @@ var _ = Describe("Killstar", func() {
 
 	Describe("GetProductCurrency", func() {
 		It("Should returns product currency", func() {
-			server := makeTestServer([]byte(productPageDocument))
+			server := makeTestServer([]byte(saleProductPageDocument))
 			defer server.Close()
 
 			doc, _ := goquery.NewDocument(server.URL)
