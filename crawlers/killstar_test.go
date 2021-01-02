@@ -151,4 +151,37 @@ var _ = Describe("Killstar", func() {
 			})
 		})
 	})
+
+	Describe("GetProductImagesURL", func() {
+		It("Should returns images url string array", func() {
+			server := makeTestServer([]byte(saleProductPageDocument))
+			defer server.Close()
+
+			doc, _ := goquery.NewDocument(server.URL)
+			actual := killstar.GetProductImagesURL(doc)
+
+			Expect(actual).To(Equal([]crawlers.ProductImage{
+				{
+					Thumbnail: "https://cdn.shopify.com/s/files/1/0228/2373/products/liliana-lace-dress_150x150_crop_center.jpg?v=1593094735",
+					Src:       "https://cdn.shopify.com/s/files/1/0228/2373/products/liliana-lace-dress.jpg?v=1593094735",
+				},
+				{
+					Thumbnail: "https://cdn.shopify.com/s/files/1/0228/2373/products/LILIANA-DRESS-B_150x150_crop_center.jpg?v=1589376638",
+					Src:       "https://cdn.shopify.com/s/files/1/0228/2373/products/LILIANA-DRESS-B.jpg?v=1589376638",
+				},
+				{
+					Thumbnail: "https://cdn.shopify.com/s/files/1/0228/2373/products/LILIANA-DRESS-C_150x150_crop_center.jpg?v=1589376638",
+					Src:       "https://cdn.shopify.com/s/files/1/0228/2373/products/LILIANA-DRESS-C.jpg?v=1589376638",
+				},
+				{
+					Thumbnail: "https://cdn.shopify.com/s/files/1/0228/2373/products/LILIANA-DRESS_150x150_crop_center.jpg?v=1589376638",
+					Src:       "https://cdn.shopify.com/s/files/1/0228/2373/products/LILIANA-DRESS.jpg?v=1589376638",
+				},
+				{
+					Thumbnail: "https://cdn.shopify.com/s/files/1/0228/2373/products/LILIANA-DRESS-D_150x150_crop_center.jpg?v=1589376638",
+					Src:       "https://cdn.shopify.com/s/files/1/0228/2373/products/LILIANA-DRESS-D.jpg?v=1589376638",
+				},
+			}))
+		})
+	})
 })

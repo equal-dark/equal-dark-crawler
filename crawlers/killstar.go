@@ -1,6 +1,11 @@
 package crawlers
 
-import "github.com/PuerkitoBio/goquery"
+import (
+	"strings"
+
+	"github.com/PuerkitoBio/goquery"
+	"github.com/thoas/go-funk"
+)
 
 // Killstar crawler
 type Killstar struct{}
@@ -55,5 +60,24 @@ func (killstar *Killstar) GetProductSalePrice(doc *goquery.Document) (salePrice 
 	priceSelector := doc.Find("[data-price-wrapper] .money")
 	priceStr := priceSelector.Last().Text()
 	salePrice = GetFloatFromText(priceStr)
+	return
+}
+
+// GetProductImagesURL returns product images url
+func (killstar *Killstar) GetProductImagesURL(doc *goquery.Document) (images []ProductImage) {
+	selector := doc.Find("li[data-mp-slider-thumb] img")
+
+	thumbnails := selector.Map(func(i int, s *goquery.Selection) string {
+		src, _ := s.Attr("src")
+		return "https:" + src
+	})
+
+	images = funk.Map(thumbnails, func(thumbnail string) ProductImage {
+		src := strings.Replace(thumbnail, "_150x150_crop_center", "", -1)
+		return ProductImage{
+			Thumbnail: thumbnail,
+			Src:       src,
+		}
+	}).([]ProductImage)
 	return
 }
