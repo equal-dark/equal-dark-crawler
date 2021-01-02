@@ -39,7 +39,7 @@ var _ = Describe("Utils", func() {
 			It("Should returns 0", func() {
 				actual := crawlers.GetFloatFromText("£")
 
-				Expect(actual).To(Equal(0))
+				Expect(actual).To(Equal(float64(0)))
 			})
 		})
 	})
