@@ -25,7 +25,7 @@ var _ = Describe("Killstar", func() {
 	Describe("IsValidProductsPage", func() {
 		Context("When location is products page", func() {
 			It("Should returns true", func() {
-				server := makeTestServer([]byte(productsPageDocument))
+				server := makeTestServer([]byte(killstarProductsPageDocument))
 				defer server.Close()
 
 				doc, _ := goquery.NewDocument(server.URL)
@@ -37,7 +37,7 @@ var _ = Describe("Killstar", func() {
 
 		Context("When location is not products page", func() {
 			It("Should returns false", func() {
-				server := makeTestServer([]byte(mainPageDocument))
+				server := makeTestServer([]byte(killstarMainPageDocument))
 				defer server.Close()
 
 				doc, _ := goquery.NewDocument(server.URL)
@@ -50,7 +50,7 @@ var _ = Describe("Killstar", func() {
 
 	Describe("GetProductsURL", func() {
 		It("should returns url array", func() {
-			server := makeTestServer([]byte(productsPageDocument))
+			server := makeTestServer([]byte(killstarProductsPageDocument))
 			defer server.Close()
 
 			doc, _ := goquery.NewDocument(server.URL)
@@ -63,7 +63,7 @@ var _ = Describe("Killstar", func() {
 	Describe("IsValidProductPage", func() {
 		Context("When location is product page", func() {
 			It("Should returns true", func() {
-				server := makeTestServer([]byte(saleProductPageDocument))
+				server := makeTestServer([]byte(killstarSaleProductPageDocument))
 				defer server.Close()
 
 				doc, _ := goquery.NewDocument(server.URL)
@@ -75,7 +75,7 @@ var _ = Describe("Killstar", func() {
 
 		Context("When location is not product page", func() {
 			It("Should returns false", func() {
-				server := makeTestServer([]byte(mainPageDocument))
+				server := makeTestServer([]byte(killstarMainPageDocument))
 				defer server.Close()
 
 				doc, _ := goquery.NewDocument(server.URL)
@@ -88,7 +88,7 @@ var _ = Describe("Killstar", func() {
 
 	Describe("GetProductName", func() {
 		It("Should returns product name", func() {
-			server := makeTestServer([]byte(saleProductPageDocument))
+			server := makeTestServer([]byte(killstarSaleProductPageDocument))
 			defer server.Close()
 
 			doc, _ := goquery.NewDocument(server.URL)
@@ -100,7 +100,7 @@ var _ = Describe("Killstar", func() {
 
 	Describe("GetProductCurrency", func() {
 		It("Should returns product currency", func() {
-			server := makeTestServer([]byte(saleProductPageDocument))
+			server := makeTestServer([]byte(killstarSaleProductPageDocument))
 			defer server.Close()
 
 			doc, _ := goquery.NewDocument(server.URL)
@@ -112,7 +112,7 @@ var _ = Describe("Killstar", func() {
 
 	Describe("GetProductPrice", func() {
 		It("Should returns float price", func() {
-			server := makeTestServer([]byte(saleProductPageDocument))
+			server := makeTestServer([]byte(killstarSaleProductPageDocument))
 			defer server.Close()
 
 			doc, _ := goquery.NewDocument(server.URL)
@@ -125,7 +125,7 @@ var _ = Describe("Killstar", func() {
 	Describe("GetProductSalePrice", func() {
 		Context("With sale price", func() {
 			It("Should returns float price", func() {
-				server := makeTestServer([]byte(saleProductPageDocument))
+				server := makeTestServer([]byte(killstarSaleProductPageDocument))
 				defer server.Close()
 
 				doc, _ := goquery.NewDocument(server.URL)
@@ -139,7 +139,7 @@ var _ = Describe("Killstar", func() {
 
 		Context("Without sale price", func() {
 			It("Should returns float price", func() {
-				server := makeTestServer([]byte(notSaleProductPageDocument))
+				server := makeTestServer([]byte(killstarNotSaleProductPageDocument))
 				defer server.Close()
 
 				doc, _ := goquery.NewDocument(server.URL)
@@ -154,7 +154,7 @@ var _ = Describe("Killstar", func() {
 
 	Describe("GetProductImagesURL", func() {
 		It("Should returns images url array", func() {
-			server := makeTestServer([]byte(saleProductPageDocument))
+			server := makeTestServer([]byte(killstarSaleProductPageDocument))
 			defer server.Close()
 
 			doc, _ := goquery.NewDocument(server.URL)
@@ -187,7 +187,7 @@ var _ = Describe("Killstar", func() {
 
 	Describe("GetProductSizes", func() {
 		It("Should returns size name and in stock array", func() {
-			server := makeTestServer([]byte(saleProductPageDocument))
+			server := makeTestServer([]byte(killstarSaleProductPageDocument))
 			defer server.Close()
 
 			doc, _ := goquery.NewDocument(server.URL)
@@ -204,7 +204,7 @@ var _ = Describe("Killstar", func() {
 		})
 
 		It("Should returns size name and in stock array", func() {
-			server := makeTestServer([]byte(notSaleProductPageDocument))
+			server := makeTestServer([]byte(killstarNotSaleProductPageDocument))
 			defer server.Close()
 
 			doc, _ := goquery.NewDocument(server.URL)
@@ -223,7 +223,7 @@ var _ = Describe("Killstar", func() {
 
 	Describe("GetProductDescription", func() {
 		It("Should returns description", func() {
-			server := makeTestServer([]byte(saleProductPageDocument))
+			server := makeTestServer([]byte(killstarSaleProductPageDocument))
 			defer server.Close()
 
 			doc, _ := goquery.NewDocument(server.URL)
@@ -233,7 +233,7 @@ var _ = Describe("Killstar", func() {
 		})
 
 		It("Should returns description", func() {
-			server := makeTestServer([]byte(notSaleProductPageDocument))
+			server := makeTestServer([]byte(killstarNotSaleProductPageDocument))
 			defer server.Close()
 
 			doc, _ := goquery.NewDocument(server.URL)

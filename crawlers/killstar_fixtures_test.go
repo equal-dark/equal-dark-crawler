@@ -1,6 +1,6 @@
 package crawlers_test
 
-var mainPageDocument = `<!doctype html>
+var killstarMainPageDocument = `<!doctype html>
 <!--[if IE 9]> <html class="ie9 no-js supports-no-cookies" lang="en"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js supports-no-cookies template-index template-suffix-" lang="en"> <!--<![endif]-->
 <head>
@@ -6508,7 +6508,7 @@ var clearpay_js_snippet_version = '1.0.1';
 </html>
 `
 
-var productsPageDocument = `<!doctype html>
+var killstarProductsPageDocument = `<!doctype html>
 <!--[if IE 9]> <html class="ie9 no-js supports-no-cookies" lang="en"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js supports-no-cookies template-collection template-suffix-" lang="en"> <!--<![endif]-->
 <head>
@@ -45037,7 +45037,7 @@ var clearpay_js_snippet_version = '1.0.1';
 </body>
 </html>`
 
-var saleProductPageDocument = `<!doctype html>
+var killstarSaleProductPageDocument = `<!doctype html>
 <!--[if IE 9]> <html class="ie9 no-js supports-no-cookies" lang="en"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js supports-no-cookies template-product template-suffix-" lang="en"> <!--<![endif]-->
 <head>
@@ -53393,7 +53393,7 @@ var clearpay_js_snippet_version = '1.0.1';
 </body>
 </html>`
 
-var notSaleProductPageDocument = `<!doctype html>
+var killstarNotSaleProductPageDocument = `<!doctype html>
 <!--[if IE 9]> <html class="ie9 no-js supports-no-cookies" lang="en"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js supports-no-cookies template-product template-suffix-" lang="en"> <!--<![endif]-->
 <head>
