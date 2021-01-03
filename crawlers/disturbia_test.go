@@ -47,4 +47,16 @@ var _ = Describe("Disturbia", func() {
 			})
 		})
 	})
+
+	Describe("GetProductsURL", func() {
+		It("Should returns url array", func() {
+			server := makeTestServer([]byte(disturbiaProductsPageDocument))
+			defer server.Close()
+
+			doc, _ := goquery.NewDocument(server.URL)
+			actual := disturbia.GetProductsURL(doc)
+
+			Expect(actual[0]).To(Equal("https://www.disturbia.co.uk/products/womens-all-tops/Blaze-Jumper"))
+		})
+	})
 })
