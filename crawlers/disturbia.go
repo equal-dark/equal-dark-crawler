@@ -29,6 +29,12 @@ func (disturbia *Disturbia) GetProductsURL(doc *goquery.Document) (productsURL [
 	return
 }
 
+// IsValidProductPage checks page
+func (disturbia *Disturbia) IsValidProductPage(doc *goquery.Document) bool {
+	priceSelector := doc.Find(".product .detail .price")
+	return priceSelector.Length() != 0
+}
+
 // GetProductName returns product name
 func (disturbia *Disturbia) GetProductName(doc *goquery.Document) (name string) {
 	nameSelector := doc.Find("h1")

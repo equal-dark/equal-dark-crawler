@@ -60,6 +60,32 @@ var _ = Describe("Disturbia", func() {
 		})
 	})
 
+	Describe("IsValidProductPage", func() {
+		Context("When it is product page", func() {
+			It("Should returns true", func() {
+				server := makeTestServer([]byte(disturbiaSaleProductPageDocument))
+				defer server.Close()
+
+				doc, _ := goquery.NewDocument(server.URL)
+				actual := disturbia.IsValidProductPage(doc)
+
+				Expect(actual).To(Equal(true))
+			})
+		})
+
+		Context("When it is not product page", func() {
+			It("Should returns false", func() {
+				server := makeTestServer([]byte(disturbiaProductsPageDocument))
+				defer server.Close()
+
+				doc, _ := goquery.NewDocument(server.URL)
+				actual := disturbia.IsValidProductPage(doc)
+
+				Expect(actual).To(Equal(false))
+			})
+		})
+	})
+
 	Describe("GetProductName", func() {
 		It("Should returns product name", func() {
 			server := makeTestServer([]byte(disturbiaSaleProductPageDocument))
