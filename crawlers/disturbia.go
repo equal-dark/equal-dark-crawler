@@ -23,3 +23,10 @@ func (disturbia *Disturbia) GetProductsURL(doc *goquery.Document) (productsURL [
 	})
 	return
 }
+
+// GetProductName returns product name
+func (disturbia *Disturbia) GetProductName(doc *goquery.Document) (name string) {
+	nameSelector := doc.Find("h1")
+	name = nameSelector.First().Text()
+	return
+}

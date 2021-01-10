@@ -59,4 +59,16 @@ var _ = Describe("Disturbia", func() {
 			Expect(actual[0]).To(Equal("https://www.disturbia.co.uk/products/womens-all-tops/Blaze-Jumper"))
 		})
 	})
+
+	Describe("GetProductName", func() {
+		It("Should returns product name", func() {
+			server := makeTestServer([]byte(disturbiaSaleProductPageDocument))
+			defer server.Close()
+
+			doc, _ := goquery.NewDocument(server.URL)
+			actual := disturbia.GetProductName(doc)
+
+			Expect(actual).To(Equal("Infernal Eternity Lace Up Vest"))
+		})
+	})
 })
