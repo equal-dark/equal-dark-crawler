@@ -35,6 +35,12 @@ func (disturbia *Disturbia) IsValidProductPage(doc *goquery.Document) bool {
 	return priceSelector.Length() != 0
 }
 
+// IsSoldoutProduct checks soldout
+func (disturbia *Disturbia) IsSoldoutProduct(doc *goquery.Document) bool {
+	soldoutSelector := doc.Find(".product .detail .sold-out")
+	return soldoutSelector.Length() != 0
+}
+
 // GetProductName returns product name
 func (disturbia *Disturbia) GetProductName(doc *goquery.Document) (name string) {
 	nameSelector := doc.Find("h1")
