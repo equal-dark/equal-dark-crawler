@@ -30,3 +30,11 @@ func (disturbia *Disturbia) GetProductName(doc *goquery.Document) (name string) 
 	name = nameSelector.First().Text()
 	return
 }
+
+// GetProductCurrency returns currency
+func (disturbia *Disturbia) GetProductCurrency(doc *goquery.Document) (currency string) {
+	priceSelector := doc.Find(".product .detail .price")
+	priceStr := priceSelector.First().Text()
+	currency = GetCurrencyFromText(priceStr)
+	return
+}

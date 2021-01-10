@@ -71,4 +71,30 @@ var _ = Describe("Disturbia", func() {
 			Expect(actual).To(Equal("Infernal Eternity Lace Up Vest"))
 		})
 	})
+
+	Describe("GetProductCurrency", func() {
+		Context("When is not sale product", func() {
+			It("Should returns product currency", func() {
+				server := makeTestServer([]byte(disturbiaNotSaleProductPageDocument))
+				defer server.Close()
+
+				doc, _ := goquery.NewDocument(server.URL)
+				actual := disturbia.GetProductCurrency(doc)
+
+				Expect(actual).To(Equal("GBP"))
+			})
+		})
+
+		Context("When is sale product", func() {
+			It("Should returns product currency", func() {
+				server := makeTestServer([]byte(disturbiaSaleProductPageDocument))
+				defer server.Close()
+
+				doc, _ := goquery.NewDocument(server.URL)
+				actual := disturbia.GetProductCurrency(doc)
+
+				Expect(actual).To(Equal("GBP"))
+			})
+		})
+	})
 })
