@@ -1,6 +1,10 @@
 package crawlers
 
-import "github.com/PuerkitoBio/goquery"
+import (
+	"strings"
+
+	"github.com/PuerkitoBio/goquery"
+)
 
 // Disturbia crawler
 type Disturbia struct{}
@@ -36,5 +40,37 @@ func (disturbia *Disturbia) GetProductCurrency(doc *goquery.Document) (currency 
 	priceSelector := doc.Find(".product .detail .price")
 	priceStr := priceSelector.First().Text()
 	currency = GetCurrencyFromText(priceStr)
+	return
+}
+
+func (disturbia *Disturbia) isSaleProduct(priceSelector *goquery.Selection) bool {
+	return priceSelector.HasClass("reduced")
+}
+
+func (disturbia *Disturbia) getProductPrice(doc *goquery.Document, sale bool) (price float64) {
+	priceSelector := doc.Find(".product .detail .price")
+	var priceStr string
+
+	if disturbia.isSaleProduct(priceSelector) {
+		priceSelectorText := priceSelector.First().Text()
+		index := GetIntFromBool(sale)
+
+		priceStr = strings.Split(priceSelectorText, "Now")[index]
+	} else {
+		priceStr = priceSelector.First().Text()
+	}
+	price = GetFloatFromText(priceStr)
+	return
+}
+
+// GetProductPrice returns float price
+func (disturbia *Disturbia) GetProductPrice(doc *goquery.Document) (price float64) {
+	price = disturbia.getProductPrice(doc, false)
+	return
+}
+
+// GetProductSalePrice returns float price
+func (disturbia *Disturbia) GetProductSalePrice(doc *goquery.Document) (salePrice float64) {
+	salePrice = disturbia.getProductPrice(doc, true)
 	return
 }

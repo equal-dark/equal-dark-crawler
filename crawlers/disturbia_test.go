@@ -97,4 +97,34 @@ var _ = Describe("Disturbia", func() {
 			})
 		})
 	})
+
+	Describe("GetProductPrice & GetProductSalePrice", func() {
+		Context("When is not sale product", func() {
+			It("Should returns equal price and sale price", func() {
+				server := makeTestServer([]byte(disturbiaNotSaleProductPageDocument))
+				defer server.Close()
+
+				doc, _ := goquery.NewDocument(server.URL)
+				price := disturbia.GetProductPrice(doc)
+				salePrice := disturbia.GetProductSalePrice(doc)
+
+				Expect(price).To(Equal(float64(46)))
+				Expect(salePrice).To(Equal(float64(46)))
+			})
+		})
+
+		Context("When is sale product", func() {
+			It("Should returns different price and sale price", func() {
+				server := makeTestServer([]byte(disturbiaSaleProductPageDocument))
+				defer server.Close()
+
+				doc, _ := goquery.NewDocument(server.URL)
+				price := disturbia.GetProductPrice(doc)
+				salePrice := disturbia.GetProductSalePrice(doc)
+
+				Expect(price).To(Equal(float64(28)))
+				Expect(salePrice).To(Equal(float64(16)))
+			})
+		})
+	})
 })
