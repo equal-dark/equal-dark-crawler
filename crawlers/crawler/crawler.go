@@ -1,6 +1,7 @@
-package crawlers
+package crawler
 
 import (
+	"equal_dark_crawler/models"
 	"errors"
 
 	"github.com/PuerkitoBio/goquery"
@@ -18,8 +19,8 @@ type Crawler interface {
 	GetProductCurrency(doc *goquery.Document) string
 	GetProductPrice(doc *goquery.Document) float64
 	GetProductSalePrice(doc *goquery.Document) float64
-	GetProductImages(doc *goquery.Document) []ProductImage
-	GetProductSizes(doc *goquery.Document) []ProductSize
+	GetProductImages(doc *goquery.Document) []models.ProductImage
+	GetProductSizes(doc *goquery.Document) []models.ProductSize
 	GetProductDescription(doc *goquery.Document) string
 }
 
@@ -46,7 +47,7 @@ func GetProductsURL(brandID int, targetURL string) (productsURL []string, err er
 }
 
 // GetProduct is get product's info
-func GetProduct(brandID int, targetURL string) (product *Product, err error) {
+func GetProduct(brandID int, targetURL string) (product *models.Product, err error) {
 	brand, exist := brands[brandID]
 	if !exist {
 		err = ErrorInvalidBrandID
@@ -63,7 +64,7 @@ func GetProduct(brandID int, targetURL string) (product *Product, err error) {
 		return
 	}
 
-	product = &Product{
+	product = &models.Product{
 		BrandID:     brandID,
 		URL:         brand.GetProductURL(doc),
 		SoldOut:     brand.IsSoldoutProduct(doc),

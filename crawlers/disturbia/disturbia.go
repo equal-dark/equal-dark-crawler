@@ -1,6 +1,8 @@
-package crawlers
+package disturbia
 
 import (
+	"equal_dark_crawler/models"
+	"equal_dark_crawler/utils"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
@@ -59,7 +61,7 @@ func (disturbia *Disturbia) GetProductName(doc *goquery.Document) (name string) 
 func (disturbia *Disturbia) GetProductCurrency(doc *goquery.Document) (currency string) {
 	priceSelector := doc.Find(".product .detail .price")
 	priceStr := priceSelector.First().Text()
-	currency = GetCurrencyFromText(priceStr)
+	currency = utils.GetCurrencyFromText(priceStr)
 	return
 }
 
@@ -73,13 +75,13 @@ func (disturbia *Disturbia) getProductPrice(doc *goquery.Document, sale bool) (p
 
 	if disturbia.isSaleProduct(priceSelector) {
 		priceSelectorText := priceSelector.First().Text()
-		index := GetIntFromBool(sale)
+		index := utils.GetIntFromBool(sale)
 
 		priceStr = strings.Split(priceSelectorText, "Now")[index]
 	} else {
 		priceStr = priceSelector.First().Text()
 	}
-	price = GetFloatFromText(priceStr)
+	price = utils.GetFloatFromText(priceStr)
 	return
 }
 
@@ -96,7 +98,7 @@ func (disturbia *Disturbia) GetProductSalePrice(doc *goquery.Document) (salePric
 }
 
 // GetProductImages returns product images thumbnail and big image url
-func (disturbia *Disturbia) GetProductImages(doc *goquery.Document) (images []ProductImage) {
+func (disturbia *Disturbia) GetProductImages(doc *goquery.Document) (images []models.ProductImage) {
 	selector := doc.Find("ul.photos li img")
 
 	thumbnails := selector.Map(func(i int, s *goquery.Selection) string {
@@ -104,17 +106,17 @@ func (disturbia *Disturbia) GetProductImages(doc *goquery.Document) (images []Pr
 		return "https://www.disturbia.co.uk" + src
 	})
 
-	images = funk.Map(thumbnails, func(src string) ProductImage {
-		return ProductImage{
+	images = funk.Map(thumbnails, func(src string) models.ProductImage {
+		return models.ProductImage{
 			Thumbnail: src,
 			Src:       src,
 		}
-	}).([]ProductImage)
+	}).([]models.ProductImage)
 	return
 }
 
 // GetProductSizes returns product size name and in stock
-func (disturbia *Disturbia) GetProductSizes(doc *goquery.Document) (sizes []ProductSize) {
+func (disturbia *Disturbia) GetProductSizes(doc *goquery.Document) (sizes []models.ProductSize) {
 	selector := doc.Find("select.stock option")
 
 	existSizes := selector.
@@ -127,12 +129,12 @@ func (disturbia *Disturbia) GetProductSizes(doc *goquery.Document) (sizes []Prod
 			return name
 		})
 
-	sizes = funk.Map(existSizes, func(name string) ProductSize {
-		return ProductSize{
+	sizes = funk.Map(existSizes, func(name string) models.ProductSize {
+		return models.ProductSize{
 			Name:    name,
 			InStock: true,
 		}
-	}).([]ProductSize)
+	}).([]models.ProductSize)
 	return
 }
 

@@ -1,4 +1,4 @@
-package crawlers_test
+package killstar_test
 
 var killstarMainPageDocument = `<!doctype html>
 <!--[if IE 9]> <html class="ie9 no-js supports-no-cookies" lang="en"> <![endif]-->

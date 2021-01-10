@@ -1,4 +1,4 @@
-package crawlers_test
+package crawler_test
 
 import (
 	"net/http"
@@ -7,7 +7,8 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	"equal_dark_crawler/crawlers"
+	"equal_dark_crawler/crawlers/crawler"
+	"equal_dark_crawler/models"
 )
 
 var _ = Describe("Crawler", func() {
@@ -26,7 +27,7 @@ var _ = Describe("Crawler", func() {
 				server := makeTestServer([]byte(killstarProductsPageDocument), 200)
 				defer server.Close()
 
-				actual, _ := crawlers.GetProductsURL(1, server.URL)
+				actual, _ := crawler.GetProductsURL(1, server.URL)
 				Expect(actual[0]).To(Equal("https://www.killstar.com/collections/womens-dresses/products/wicked-world-dress"))
 				Expect(actual[1]).To(Equal("https://www.killstar.com/collections/womens-dresses/products/dark-daydreams-dress"))
 			})
@@ -37,8 +38,8 @@ var _ = Describe("Crawler", func() {
 				server := makeTestServer([]byte(disturbiaProductsPageDocument), 200)
 				defer server.Close()
 
-				_, err := crawlers.GetProductsURL(1, server.URL)
-				Expect(err).To(Equal(crawlers.ErrorInvalidPage))
+				_, err := crawler.GetProductsURL(1, server.URL)
+				Expect(err).To(Equal(crawler.ErrorInvalidPage))
 			})
 		})
 
@@ -47,8 +48,8 @@ var _ = Describe("Crawler", func() {
 				server := makeTestServer([]byte(disturbiaProductsPageDocument), 200)
 				defer server.Close()
 
-				_, err := crawlers.GetProductsURL(-1, server.URL)
-				Expect(err).To(Equal(crawlers.ErrorInvalidBrandID))
+				_, err := crawler.GetProductsURL(-1, server.URL)
+				Expect(err).To(Equal(crawler.ErrorInvalidBrandID))
 			})
 		})
 
@@ -57,8 +58,8 @@ var _ = Describe("Crawler", func() {
 				server := makeTestServer(nil, 400)
 				defer server.Close()
 
-				_, err := crawlers.GetProductsURL(1, server.URL)
-				Expect(err).To(Equal(crawlers.ErrorInvalidPage))
+				_, err := crawler.GetProductsURL(1, server.URL)
+				Expect(err).To(Equal(crawler.ErrorInvalidPage))
 			})
 		})
 	})
@@ -69,7 +70,7 @@ var _ = Describe("Crawler", func() {
 				server := makeTestServer([]byte(killstarSaleProductPageDocument), 200)
 				defer server.Close()
 
-				actual, _ := crawlers.GetProduct(1, server.URL)
+				actual, _ := crawler.GetProduct(1, server.URL)
 
 				Expect(actual.SoldOut).To(BeFalse())
 				Expect(actual.URL).To(Equal("https://www.killstar.com/products/liliana-lace-dress-b"))
@@ -77,7 +78,7 @@ var _ = Describe("Crawler", func() {
 				Expect(actual.Currency).To(Equal("GBP"))
 				Expect(actual.Price).To(Equal(59.99))
 				Expect(actual.SalePrice).To(Equal(41.99))
-				Expect(actual.Images).To(Equal([]crawlers.ProductImage{
+				Expect(actual.Images).To(Equal([]models.ProductImage{
 					{
 						Thumbnail: "https://cdn.shopify.com/s/files/1/0228/2373/products/liliana-lace-dress_150x150_crop_center.jpg?v=1593094735",
 						Src:       "https://cdn.shopify.com/s/files/1/0228/2373/products/liliana-lace-dress.jpg?v=1593094735",
@@ -99,7 +100,7 @@ var _ = Describe("Crawler", func() {
 						Src:       "https://cdn.shopify.com/s/files/1/0228/2373/products/LILIANA-DRESS-D.jpg?v=1589376638",
 					},
 				}))
-				Expect(actual.Sizes).To(Equal([]crawlers.ProductSize{
+				Expect(actual.Sizes).To(Equal([]models.ProductSize{
 					{Name: "XS", InStock: false},
 					{Name: "S", InStock: false},
 					{Name: "M", InStock: false},
@@ -116,8 +117,8 @@ var _ = Describe("Crawler", func() {
 				server := makeTestServer([]byte(disturbiaSaleProductPageDocument), 200)
 				defer server.Close()
 
-				_, err := crawlers.GetProduct(1, server.URL)
-				Expect(err).To(Equal(crawlers.ErrorInvalidPage))
+				_, err := crawler.GetProduct(1, server.URL)
+				Expect(err).To(Equal(crawler.ErrorInvalidPage))
 			})
 		})
 
@@ -126,8 +127,8 @@ var _ = Describe("Crawler", func() {
 				server := makeTestServer([]byte(disturbiaSaleProductPageDocument), 200)
 				defer server.Close()
 
-				_, err := crawlers.GetProduct(-1, server.URL)
-				Expect(err).To(Equal(crawlers.ErrorInvalidBrandID))
+				_, err := crawler.GetProduct(-1, server.URL)
+				Expect(err).To(Equal(crawler.ErrorInvalidBrandID))
 			})
 		})
 
@@ -136,8 +137,8 @@ var _ = Describe("Crawler", func() {
 				server := makeTestServer([]byte("Internal server error"), 500)
 				defer server.Close()
 
-				_, err := crawlers.GetProduct(1, server.URL)
-				Expect(err).To(Equal(crawlers.ErrorInvalidPage))
+				_, err := crawler.GetProduct(1, server.URL)
+				Expect(err).To(Equal(crawler.ErrorInvalidPage))
 			})
 		})
 	})

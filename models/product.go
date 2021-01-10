@@ -1,4 +1,4 @@
-package crawlers
+package models
 
 // Product is product object
 type Product struct {

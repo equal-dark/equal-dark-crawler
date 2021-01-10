@@ -1,4 +1,4 @@
-package crawlers_test
+package disturbia_test
 
 import (
 	"net/http"
@@ -8,11 +8,12 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	"equal_dark_crawler/crawlers"
+	"equal_dark_crawler/crawlers/disturbia"
+	"equal_dark_crawler/models"
 )
 
 var _ = Describe("Disturbia", func() {
-	var disturbia crawlers.Disturbia
+	var disturbia disturbia.Disturbia
 
 	var makeTestServer = func(body []byte) *httptest.Server {
 		server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
@@ -200,7 +201,7 @@ var _ = Describe("Disturbia", func() {
 			doc, _ := goquery.NewDocument(server.URL)
 			actual := disturbia.GetProductImages(doc)
 
-			Expect(actual).To(Equal([]crawlers.ProductImage{
+			Expect(actual).To(Equal([]models.ProductImage{
 				{
 					Thumbnail: "https://www.disturbia.co.uk/products/womens-all-tops/infernal-eternity-lace-up-vest/image/14743.jpeg",
 					Src:       "https://www.disturbia.co.uk/products/womens-all-tops/infernal-eternity-lace-up-vest/image/14743.jpeg",
@@ -242,7 +243,7 @@ var _ = Describe("Disturbia", func() {
 				doc, _ := goquery.NewDocument(server.URL)
 				actual := disturbia.GetProductSizes(doc)
 
-				Expect(actual).To(Equal([]crawlers.ProductSize{
+				Expect(actual).To(Equal([]models.ProductSize{
 					{Name: "UK 6", InStock: true},
 					{Name: "UK 8", InStock: true},
 					{Name: "UK 10", InStock: true},
@@ -260,7 +261,7 @@ var _ = Describe("Disturbia", func() {
 				doc, _ := goquery.NewDocument(server.URL)
 				actual := disturbia.GetProductSizes(doc)
 
-				Expect(actual).To(Equal([]crawlers.ProductSize{}))
+				Expect(actual).To(Equal([]models.ProductSize{}))
 			})
 		})
 	})

@@ -1,4 +1,4 @@
-package crawlers_test
+package crawler_test
 
 import (
 	"testing"
@@ -9,5 +9,5 @@ import (
 
 func TestCrawlers(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Crawlers Suite")
+	RunSpecs(t, "Crawler Suite")
 }

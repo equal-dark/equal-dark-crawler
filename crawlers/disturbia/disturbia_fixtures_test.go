@@ -1,4 +1,4 @@
-package crawlers_test
+package disturbia_test
 
 var disturbiaMainPageDocument = `<!doctype html>
 <html lang="en">

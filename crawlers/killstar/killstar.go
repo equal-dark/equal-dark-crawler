@@ -1,4 +1,4 @@
-package crawlers
+package killstar
 
 import (
 	"encoding/json"
@@ -8,6 +8,9 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/thoas/go-funk"
+
+	"equal_dark_crawler/models"
+	"equal_dark_crawler/utils"
 )
 
 // Killstar crawler
@@ -61,7 +64,7 @@ func (killstar *Killstar) GetProductName(doc *goquery.Document) (name string) {
 func (killstar *Killstar) GetProductCurrency(doc *goquery.Document) (currency string) {
 	priceSelector := doc.Find("[data-price-wrapper] .money")
 	priceStr := priceSelector.First().Text()
-	currency = GetCurrencyFromText(priceStr)
+	currency = utils.GetCurrencyFromText(priceStr)
 	return
 }
 
@@ -69,7 +72,7 @@ func (killstar *Killstar) GetProductCurrency(doc *goquery.Document) (currency st
 func (killstar *Killstar) GetProductPrice(doc *goquery.Document) (price float64) {
 	priceSelector := doc.Find("[data-price-wrapper] .money")
 	priceStr := priceSelector.First().Text()
-	price = GetFloatFromText(priceStr)
+	price = utils.GetFloatFromText(priceStr)
 	return
 }
 
@@ -77,12 +80,12 @@ func (killstar *Killstar) GetProductPrice(doc *goquery.Document) (price float64)
 func (killstar *Killstar) GetProductSalePrice(doc *goquery.Document) (salePrice float64) {
 	priceSelector := doc.Find("[data-price-wrapper] .money")
 	priceStr := priceSelector.Last().Text()
-	salePrice = GetFloatFromText(priceStr)
+	salePrice = utils.GetFloatFromText(priceStr)
 	return
 }
 
 // GetProductImages returns product images thumbnail and big image url
-func (killstar *Killstar) GetProductImages(doc *goquery.Document) (images []ProductImage) {
+func (killstar *Killstar) GetProductImages(doc *goquery.Document) (images []models.ProductImage) {
 	selector := doc.Find("li[data-mp-slider-thumb] img")
 
 	thumbnails := selector.Map(func(i int, s *goquery.Selection) string {
@@ -90,19 +93,19 @@ func (killstar *Killstar) GetProductImages(doc *goquery.Document) (images []Prod
 		return "https:" + src
 	})
 
-	images = funk.Map(thumbnails, func(thumbnail string) ProductImage {
+	images = funk.Map(thumbnails, func(thumbnail string) models.ProductImage {
 		src := strings.Replace(thumbnail, "_150x150_crop_center", "", -1)
-		return ProductImage{
+		return models.ProductImage{
 			Thumbnail: thumbnail,
 			Src:       src,
 		}
-	}).([]ProductImage)
+	}).([]models.ProductImage)
 	return
 }
 
 // GetProductSizes returns product size name and in stock
-func (killstar *Killstar) GetProductSizes(doc *goquery.Document) (sizes []ProductSize) {
-	sizes = []ProductSize{}
+func (killstar *Killstar) GetProductSizes(doc *goquery.Document) (sizes []models.ProductSize) {
+	sizes = []models.ProductSize{}
 	selector := doc.Find(`select[name="id"] option`)
 
 	selector.Each(func(i int, s *goquery.Selection) {
@@ -116,7 +119,7 @@ func (killstar *Killstar) GetProductSizes(doc *goquery.Document) (sizes []Produc
 		_, disabled := s.Attr("disabled")
 		inStock := !disabled
 
-		sizes = append(sizes, ProductSize{
+		sizes = append(sizes, models.ProductSize{
 			Name:    name,
 			InStock: inStock,
 		})

@@ -1,4 +1,4 @@
-package crawlers_test
+package killstar_test
 
 import (
 	"net/http"
@@ -8,11 +8,12 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	"equal_dark_crawler/crawlers"
+	"equal_dark_crawler/crawlers/killstar"
+	"equal_dark_crawler/models"
 )
 
 var _ = Describe("Killstar", func() {
-	var killstar crawlers.Killstar
+	var killstar killstar.Killstar
 
 	var makeTestServer = func(body []byte) *httptest.Server {
 		server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
@@ -198,7 +199,7 @@ var _ = Describe("Killstar", func() {
 			doc, _ := goquery.NewDocument(server.URL)
 			actual := killstar.GetProductImages(doc)
 
-			Expect(actual).To(Equal([]crawlers.ProductImage{
+			Expect(actual).To(Equal([]models.ProductImage{
 				{
 					Thumbnail: "https://cdn.shopify.com/s/files/1/0228/2373/products/liliana-lace-dress_150x150_crop_center.jpg?v=1593094735",
 					Src:       "https://cdn.shopify.com/s/files/1/0228/2373/products/liliana-lace-dress.jpg?v=1593094735",
@@ -231,7 +232,7 @@ var _ = Describe("Killstar", func() {
 			doc, _ := goquery.NewDocument(server.URL)
 			actual := killstar.GetProductSizes(doc)
 
-			Expect(actual).To(Equal([]crawlers.ProductSize{
+			Expect(actual).To(Equal([]models.ProductSize{
 				{Name: "XS", InStock: false},
 				{Name: "S", InStock: false},
 				{Name: "M", InStock: false},
@@ -248,7 +249,7 @@ var _ = Describe("Killstar", func() {
 			doc, _ := goquery.NewDocument(server.URL)
 			actual := killstar.GetProductSizes(doc)
 
-			Expect(actual).To(Equal([]crawlers.ProductSize{
+			Expect(actual).To(Equal([]models.ProductSize{
 				{Name: "XS", InStock: true},
 				{Name: "S", InStock: true},
 				{Name: "M", InStock: true},

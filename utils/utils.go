@@ -1,4 +1,4 @@
-package crawlers
+package utils
 
 import (
 	"regexp"
