@@ -43,4 +43,22 @@ var _ = Describe("Utils", func() {
 			})
 		})
 	})
+
+	Describe("GetIntFromBool", func() {
+		Context("When true", func() {
+			It("Should returns 1", func() {
+				actual := crawlers.GetIntFromBool(true)
+
+				Expect(actual).To(Equal(1))
+			})
+		})
+
+		Context("When false", func() {
+			It("Should returns 0", func() {
+				actual := crawlers.GetIntFromBool(false)
+
+				Expect(actual).To(Equal(0))
+			})
+		})
+	})
 })

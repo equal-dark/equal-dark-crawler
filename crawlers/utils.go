@@ -32,3 +32,11 @@ func GetFloatFromText(s string) float64 {
 	}
 	return f
 }
+
+// GetIntFromBool returns true = 1 / false = 0
+func GetIntFromBool(b bool) int {
+	if b {
+		return 1
+	}
+	return 0
+}
