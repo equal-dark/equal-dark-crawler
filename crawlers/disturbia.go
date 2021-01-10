@@ -93,3 +93,24 @@ func (disturbia *Disturbia) GetProductImages(doc *goquery.Document) (images []Pr
 	}).([]ProductImage)
 	return
 }
+
+// GetProductSizes returns product size name and in stock
+func (disturbia *Disturbia) GetProductSizes(doc *goquery.Document) (sizes []ProductSize) {
+	selector := doc.Find("select.stock option")
+
+	allSizes := selector.Map(func(i int, s *goquery.Selection) string {
+		name := s.Text()
+		return name
+	})
+	existSizes := funk.Filter(allSizes, func(name string) bool {
+		return name != ""
+	}).([]string)
+
+	sizes = funk.Map(existSizes, func(name string) ProductSize {
+		return ProductSize{
+			Name:    name,
+			InStock: true,
+		}
+	}).([]ProductSize)
+	return
+}

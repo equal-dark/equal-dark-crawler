@@ -168,4 +168,36 @@ var _ = Describe("Disturbia", func() {
 			}))
 		})
 	})
+
+	Describe("GetProductSizes", func() {
+		Context("With sizes product", func() {
+			It("returns product sizes", func() {
+				server := makeTestServer([]byte(disturbiaSaleProductPageDocument))
+				defer server.Close()
+
+				doc, _ := goquery.NewDocument(server.URL)
+				actual := disturbia.GetProductSizes(doc)
+
+				Expect(actual).To(Equal([]crawlers.ProductSize{
+					{Name: "UK 6", InStock: true},
+					{Name: "UK 8", InStock: true},
+					{Name: "UK 10", InStock: true},
+					{Name: "UK 12", InStock: true},
+					{Name: "UK 16 ", InStock: true},
+				}))
+			})
+		})
+
+		Context("Without sizes product", func() {
+			It("returns empty product sizes", func() {
+				server := makeTestServer([]byte(disturbiaNoSizeProductDocument))
+				defer server.Close()
+
+				doc, _ := goquery.NewDocument(server.URL)
+				actual := disturbia.GetProductSizes(doc)
+
+				Expect(actual).To(Equal([]crawlers.ProductSize{}))
+			})
+		})
+	})
 })
