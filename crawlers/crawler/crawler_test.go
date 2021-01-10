@@ -53,13 +53,10 @@ var _ = Describe("Crawler", func() {
 			})
 		})
 
-		Context("When status not 200", func() {
-			It("Should returns invalid page error", func() {
-				server := makeTestServer(nil, 400)
-				defer server.Close()
-
-				_, err := crawler.GetProductsURL(1, server.URL)
-				Expect(err).To(Equal(crawler.ErrorInvalidPage))
+		Context("When http error", func() {
+			It("Should returns http error", func() {
+				_, err := crawler.GetProductsURL(1, "http://localhost:9090")
+				Expect(err).ToNot(BeNil())
 			})
 		})
 	})
@@ -132,13 +129,10 @@ var _ = Describe("Crawler", func() {
 			})
 		})
 
-		Context("When status not 200", func() {
-			It("Should returns invalid page error", func() {
-				server := makeTestServer([]byte("Internal server error"), 500)
-				defer server.Close()
-
-				_, err := crawler.GetProduct(1, server.URL)
-				Expect(err).To(Equal(crawler.ErrorInvalidPage))
+		Context("When http error", func() {
+			It("Should returns http error", func() {
+				_, err := crawler.GetProduct(1, "http://localhost:9090")
+				Expect(err).ToNot(BeNil())
 			})
 		})
 	})
