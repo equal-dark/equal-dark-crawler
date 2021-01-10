@@ -3,6 +3,7 @@ package crawlers
 import (
 	"encoding/json"
 	"errors"
+	"regexp"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
@@ -32,6 +33,14 @@ func (killstar *Killstar) GetProductsURL(doc *goquery.Document) (productsURL []s
 func (killstar *Killstar) IsValidProductPage(doc *goquery.Document) bool {
 	nameSelector := doc.Find("[uk-grid] h2")
 	return nameSelector.Length() != 0
+}
+
+// IsSoldoutProduct checks soldout
+func (killstar *Killstar) IsSoldoutProduct(doc *goquery.Document) bool {
+	soldoutSelector := doc.Find(".mp-product-when-available > button > span")
+	findNotString := regexp.MustCompile("[^a-zA-Z]")
+	selectorText := findNotString.ReplaceAllString(soldoutSelector.Text(), "")
+	return strings.ToLower(selectorText) == "soldout"
 }
 
 // GetProductName returns product name
