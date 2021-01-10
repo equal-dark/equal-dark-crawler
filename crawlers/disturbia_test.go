@@ -112,6 +112,18 @@ var _ = Describe("Disturbia", func() {
 		})
 	})
 
+	Describe("GetProductURL", func() {
+		It("Should returns product url", func() {
+			server := makeTestServer([]byte(disturbiaSaleProductPageDocument))
+			defer server.Close()
+
+			doc, _ := goquery.NewDocument(server.URL)
+			actual := disturbia.GetProductURL(doc)
+
+			Expect(actual).To(Equal("https://www.disturbia.co.uk/products/womens-all-tops/infernal-eternity-lace-up-vest"))
+		})
+	})
+
 	Describe("GetProductName", func() {
 		It("Should returns product name", func() {
 			server := makeTestServer([]byte(disturbiaSaleProductPageDocument))

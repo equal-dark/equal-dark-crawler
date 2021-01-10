@@ -43,6 +43,13 @@ func (killstar *Killstar) IsSoldoutProduct(doc *goquery.Document) bool {
 	return strings.ToLower(selectorText) == "soldout"
 }
 
+// GetProductURL returns product original url
+func (killstar *Killstar) GetProductURL(doc *goquery.Document) (productURL string) {
+	urlSelector := doc.Find(`link[rel="canonical"]`)
+	productURL, _ = urlSelector.Attr("href")
+	return
+}
+
 // GetProductName returns product name
 func (killstar *Killstar) GetProductName(doc *goquery.Document) (name string) {
 	nameSelector := doc.Find("[uk-grid] h2")

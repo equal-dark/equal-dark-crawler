@@ -72,6 +72,7 @@ var _ = Describe("Crawler", func() {
 				actual, _ := crawlers.GetProduct(1, server.URL)
 
 				Expect(actual.SoldOut).To(BeFalse())
+				Expect(actual.URL).To(Equal("https://www.killstar.com/products/liliana-lace-dress-b"))
 				Expect(actual.Name).To(Equal("Liliana Lace Dress"))
 				Expect(actual.Currency).To(Equal("GBP"))
 				Expect(actual.Price).To(Equal(59.99))

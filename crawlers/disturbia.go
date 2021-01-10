@@ -41,6 +41,13 @@ func (disturbia *Disturbia) IsSoldoutProduct(doc *goquery.Document) bool {
 	return soldoutSelector.Length() != 0
 }
 
+// GetProductURL returns product original url
+func (disturbia *Disturbia) GetProductURL(doc *goquery.Document) (productURL string) {
+	urlSelector := doc.Find(`meta[property="og:url"]`)
+	productURL, _ = urlSelector.Attr("content")
+	return
+}
+
 // GetProductName returns product name
 func (disturbia *Disturbia) GetProductName(doc *goquery.Document) (name string) {
 	nameSelector := doc.Find("h1")

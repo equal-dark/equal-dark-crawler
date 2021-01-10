@@ -13,6 +13,7 @@ type Crawler interface {
 
 	IsValidProductPage(doc *goquery.Document) bool
 	IsSoldoutProduct(doc *goquery.Document) bool
+	GetProductURL(doc *goquery.Document) string
 	GetProductName(doc *goquery.Document) string
 	GetProductCurrency(doc *goquery.Document) string
 	GetProductPrice(doc *goquery.Document) float64
@@ -63,8 +64,8 @@ func GetProduct(brandID int, targetURL string) (product *Product, err error) {
 	}
 
 	product = &Product{
-		URL:         targetURL,
 		BrandID:     brandID,
+		URL:         brand.GetProductURL(doc),
 		SoldOut:     brand.IsSoldoutProduct(doc),
 		Name:        brand.GetProductName(doc),
 		Currency:    brand.GetProductCurrency(doc),
