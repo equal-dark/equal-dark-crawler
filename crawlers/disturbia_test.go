@@ -200,4 +200,16 @@ var _ = Describe("Disturbia", func() {
 			})
 		})
 	})
+
+	Describe("GetProductDescription", func() {
+		It("Should returns url array", func() {
+			server := makeTestServer([]byte(disturbiaSaleProductPageDocument))
+			defer server.Close()
+
+			doc, _ := goquery.NewDocument(server.URL)
+			actual := disturbia.GetProductDescription(doc)
+
+			Expect(actual).To(Equal("Longline graphic vest with lace up side seam details.\nLarge soft-touch front screen print.\u00a0\nArtwork by Mark Riddick.\nMetal eyelets.\nRegular fit.\n100% Cotton.\u00a0"))
+		})
+	})
 })

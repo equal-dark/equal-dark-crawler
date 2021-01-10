@@ -116,3 +116,15 @@ func (disturbia *Disturbia) GetProductSizes(doc *goquery.Document) (sizes []Prod
 	}).([]ProductSize)
 	return
 }
+
+// GetProductDescription returns description
+func (disturbia *Disturbia) GetProductDescription(doc *goquery.Document) (description string) {
+	rowsSelector := doc.Find(".description .content p")
+	rows := rowsSelector.Map(func(i int, s *goquery.Selection) string {
+		text := s.Text()
+		return text
+	})
+
+	description = strings.Join(rows, "\n")
+	return
+}
