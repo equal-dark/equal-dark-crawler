@@ -6,18 +6,6 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-// ProductImage type of product image
-type ProductImage struct {
-	Thumbnail string
-	Src       string
-}
-
-// ProductSize type of product size name and in stock
-type ProductSize struct {
-	Name    string
-	InStock bool
-}
-
 // Crawler interface of crawlers
 type Crawler interface {
 	IsValidProductsPage(doc *goquery.Document) bool
@@ -33,17 +21,6 @@ type Crawler interface {
 	GetProductSizes(doc *goquery.Document) []ProductSize
 	GetProductDescription(doc *goquery.Document) string
 }
-
-var brands = map[int]Crawler{
-	1: new(Killstar),
-	2: new(Disturbia),
-}
-
-// ErrorInvalidBrandID is not registered brand id
-var ErrorInvalidBrandID = errors.New("invalid brandID")
-
-// ErrorInvalidPage is catched error page
-var ErrorInvalidPage = errors.New("invalid products page")
 
 // GetProductsURL get brand id and target url and returns page's products urls
 func GetProductsURL(brandID int, targetURL string) (productsURL []string, err error) {
@@ -64,5 +41,38 @@ func GetProductsURL(brandID int, targetURL string) (productsURL []string, err er
 	}
 
 	productsURL = brand.GetProductsURL(doc)
+	return
+}
+
+// GetProduct is get product's info
+func GetProduct(brandID int, targetURL string) (product *Product, err error) {
+	brand, exist := brands[brandID]
+	if !exist {
+		err = ErrorInvalidBrandID
+		return
+	}
+
+	doc, err := goquery.NewDocument(targetURL)
+	if err != nil {
+		return
+	}
+
+	if !brand.IsValidProductPage(doc) {
+		err = ErrorInvalidPage
+		return
+	}
+
+	product = &Product{
+		URL:         targetURL,
+		BrandID:     brandID,
+		SoldOut:     brand.IsSoldoutProduct(doc),
+		Name:        brand.GetProductName(doc),
+		Currency:    brand.GetProductCurrency(doc),
+		Price:       brand.GetProductPrice(doc),
+		SalePrice:   brand.GetProductSalePrice(doc),
+		Images:      brand.GetProductImages(doc),
+		Sizes:       brand.GetProductSizes(doc),
+		Description: brand.GetProductDescription(doc),
+	}
 	return
 }
