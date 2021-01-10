@@ -261,7 +261,7 @@ var _ = Describe("Disturbia", func() {
 			doc, _ := goquery.NewDocument(server.URL)
 			actual := disturbia.GetProductDescription(doc)
 
-			Expect(actual).To(Equal("Longline graphic vest with lace up side seam details.\nLarge soft-touch front screen print.\u00a0\nArtwork by Mark Riddick.\nMetal eyelets.\nRegular fit.\n100% Cotton.\u00a0"))
+			Expect(actual).To(Equal("Longline graphic vest with lace up side seam details.\n\nLarge soft-touch front screen print.&nbsp;\n\nArtwork by Mark Riddick.\n\nMetal eyelets.\n\nRegular fit.\n\n100% Cotton.&nbsp;\n"))
 		})
 	})
 })
