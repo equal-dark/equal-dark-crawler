@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/thoas/go-funk"
 )
 
 // Disturbia crawler
@@ -72,5 +73,23 @@ func (disturbia *Disturbia) GetProductPrice(doc *goquery.Document) (price float6
 // GetProductSalePrice returns float price
 func (disturbia *Disturbia) GetProductSalePrice(doc *goquery.Document) (salePrice float64) {
 	salePrice = disturbia.getProductPrice(doc, true)
+	return
+}
+
+// GetProductImages returns product images thumbnail and big image url
+func (disturbia *Disturbia) GetProductImages(doc *goquery.Document) (images []ProductImage) {
+	selector := doc.Find("ul.photos li img")
+
+	thumbnails := selector.Map(func(i int, s *goquery.Selection) string {
+		src, _ := s.Attr("src")
+		return "https://www.disturbia.co.uk" + src
+	})
+
+	images = funk.Map(thumbnails, func(src string) ProductImage {
+		return ProductImage{
+			Thumbnail: src,
+			Src:       src,
+		}
+	}).([]ProductImage)
 	return
 }

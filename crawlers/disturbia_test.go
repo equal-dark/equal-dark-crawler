@@ -127,4 +127,45 @@ var _ = Describe("Disturbia", func() {
 			})
 		})
 	})
+
+	Describe("GetProductImages", func() {
+		It("Should returns product images", func() {
+			server := makeTestServer([]byte(disturbiaSaleProductPageDocument))
+			defer server.Close()
+
+			doc, _ := goquery.NewDocument(server.URL)
+			actual := disturbia.GetProductImages(doc)
+
+			Expect(actual).To(Equal([]crawlers.ProductImage{
+				{
+					Thumbnail: "https://www.disturbia.co.uk/products/womens-all-tops/infernal-eternity-lace-up-vest/image/14743.jpeg",
+					Src:       "https://www.disturbia.co.uk/products/womens-all-tops/infernal-eternity-lace-up-vest/image/14743.jpeg",
+				},
+				{
+					Thumbnail: "https://www.disturbia.co.uk/products/womens-all-tops/infernal-eternity-lace-up-vest/image/14497.jpeg",
+					Src:       "https://www.disturbia.co.uk/products/womens-all-tops/infernal-eternity-lace-up-vest/image/14497.jpeg",
+				},
+				{
+					Thumbnail: "https://www.disturbia.co.uk/products/womens-all-tops/infernal-eternity-lace-up-vest/image/14739.jpeg",
+					Src:       "https://www.disturbia.co.uk/products/womens-all-tops/infernal-eternity-lace-up-vest/image/14739.jpeg",
+				},
+				{
+					Thumbnail: "https://www.disturbia.co.uk/products/womens-all-tops/infernal-eternity-lace-up-vest/image/14741.jpeg",
+					Src:       "https://www.disturbia.co.uk/products/womens-all-tops/infernal-eternity-lace-up-vest/image/14741.jpeg",
+				},
+				{
+					Thumbnail: "https://www.disturbia.co.uk/products/womens-all-tops/infernal-eternity-lace-up-vest/image/14740.jpeg",
+					Src:       "https://www.disturbia.co.uk/products/womens-all-tops/infernal-eternity-lace-up-vest/image/14740.jpeg",
+				},
+				{
+					Thumbnail: "https://www.disturbia.co.uk/products/womens-all-tops/infernal-eternity-lace-up-vest/image/14496.jpeg",
+					Src:       "https://www.disturbia.co.uk/products/womens-all-tops/infernal-eternity-lace-up-vest/image/14496.jpeg",
+				},
+				{
+					Thumbnail: "https://www.disturbia.co.uk/products/womens-all-tops/infernal-eternity-lace-up-vest/image/14742.jpeg",
+					Src:       "https://www.disturbia.co.uk/products/womens-all-tops/infernal-eternity-lace-up-vest/image/14742.jpeg",
+				},
+			}))
+		})
+	})
 })
