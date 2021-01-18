@@ -1,6 +1,7 @@
 package rogueandwolf
 
 import (
+	"equal_dark_crawler/utils"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
@@ -41,5 +42,12 @@ func (rogueAndWolf *RogueAndWolf) IsSoldoutProduct(doc *goquery.Document) bool {
 func (rogueAndWolf *RogueAndWolf) GetProductName(doc *goquery.Document) (name string) {
 	nameSelector := doc.Find("meta[property=\"og:title\"]")
 	name, _ = nameSelector.First().Attr("content")
+	return
+}
+
+// GetProductPrice returns float price
+func (rogueAndWolf *RogueAndWolf) GetProductPrice(doc *goquery.Document) (price float64) {
+	priceStr := doc.Find(".product-single__meta div.product__price .money").First().Text()
+	price = utils.GetFloatFromText(priceStr)
 	return
 }

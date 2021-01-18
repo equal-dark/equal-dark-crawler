@@ -113,4 +113,16 @@ var _ = Describe("RogueAndWolf", func() {
 			Expect(actual).To(Equal("Hunt ring in Black"))
 		})
 	})
+
+	Describe("GetProductPrice", func() {
+		It("Should returns name", func() {
+			server := makeTestServer([]byte(noSaleProductDocument))
+			defer server.Close()
+
+			doc, _ := goquery.NewDocument(server.URL)
+			actual := rogueAndWolf.GetProductPrice(doc)
+
+			Expect(actual).To(Equal(21.6))
+		})
+	})
 })
