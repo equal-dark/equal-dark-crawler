@@ -75,4 +75,30 @@ var _ = Describe("RogueAndWolf", func() {
 			})
 		})
 	})
+
+	Describe("IsSoldoutProduct", func() {
+		Context("When it is sold out", func() {
+			It("Should returns true", func() {
+				server := makeTestServer([]byte(soldOutProductDocument))
+				defer server.Close()
+
+				doc, _ := goquery.NewDocument(server.URL)
+				actual := rogueAndWolf.IsSoldoutProduct(doc)
+
+				Expect(actual).To(BeTrue())
+			})
+		})
+
+		Context("When it is not sold out", func() {
+			It("Should returns false", func() {
+				server := makeTestServer([]byte(noSaleProductDocument))
+				defer server.Close()
+
+				doc, _ := goquery.NewDocument(server.URL)
+				actual := rogueAndWolf.IsSoldoutProduct(doc)
+
+				Expect(actual).To(BeFalse())
+			})
+		})
+	})
 })

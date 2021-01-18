@@ -30,3 +30,9 @@ func (rogueAndWolf *RogueAndWolf) IsValidProductPage(doc *goquery.Document) bool
 	priceSelector := doc.Find(".product__price")
 	return priceSelector.Length() != 0
 }
+
+// IsSoldoutProduct checks soldout
+func (rogueAndWolf *RogueAndWolf) IsSoldoutProduct(doc *goquery.Document) bool {
+	soldOutText := doc.Find(".add-to-cart").First().Text()
+	return strings.Contains(soldOutText, "Sold Out")
+}
