@@ -36,3 +36,10 @@ func (rogueAndWolf *RogueAndWolf) IsSoldoutProduct(doc *goquery.Document) bool {
 	soldOutText := doc.Find(".add-to-cart").First().Text()
 	return strings.Contains(soldOutText, "Sold Out")
 }
+
+// GetProductName returns product name
+func (rogueAndWolf *RogueAndWolf) GetProductName(doc *goquery.Document) (name string) {
+	nameSelector := doc.Find("meta[property=\"og:title\"]")
+	name, _ = nameSelector.First().Attr("content")
+	return
+}

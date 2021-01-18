@@ -101,4 +101,16 @@ var _ = Describe("RogueAndWolf", func() {
 			})
 		})
 	})
+
+	Describe("GetProductName", func() {
+		It("Should returns name", func() {
+			server := makeTestServer([]byte(noSaleProductDocument))
+			defer server.Close()
+
+			doc, _ := goquery.NewDocument(server.URL)
+			actual := rogueAndWolf.GetProductName(doc)
+
+			Expect(actual).To(Equal("Hunt ring in Black"))
+		})
+	})
 })
