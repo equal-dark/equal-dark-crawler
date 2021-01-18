@@ -24,3 +24,9 @@ func (rogueAndWolf *RogueAndWolf) GetProductsURL(doc *goquery.Document) (product
 	})
 	return
 }
+
+// IsValidProductPage checks page
+func (rogueAndWolf *RogueAndWolf) IsValidProductPage(doc *goquery.Document) bool {
+	priceSelector := doc.Find(".product__price")
+	return priceSelector.Length() != 0
+}

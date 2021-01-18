@@ -49,4 +49,30 @@ var _ = Describe("RogueAndWolf", func() {
 			})
 		})
 	})
+
+	Describe("IsValidProductPage", func() {
+		Context("When products page", func() {
+			It("Should returns false", func() {
+				server := makeTestServer([]byte(productsPageDocument))
+				defer server.Close()
+
+				doc, _ := goquery.NewDocument(server.URL)
+				actual := rogueAndWolf.IsValidProductPage(doc)
+
+				Expect(actual).To(BeFalse())
+			})
+		})
+
+		Context("When product page", func() {
+			It("Should returns true", func() {
+				server := makeTestServer([]byte(noSaleProductDocument))
+				defer server.Close()
+
+				doc, _ := goquery.NewDocument(server.URL)
+				actual := rogueAndWolf.IsValidProductPage(doc)
+
+				Expect(actual).To(BeTrue())
+			})
+		})
+	})
 })
